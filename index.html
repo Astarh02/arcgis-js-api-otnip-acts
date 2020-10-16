@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'>
+
+        <title>Акты ОТНИП - 1.0</title>
+        <link rel="stylesheet" href="http://atlas.mvs.int/arcgis_js_api/library/4.13/esri/themes/light/main.css">
+        <style>
+            html,
+            body,
+           .page {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+            }
+
+            .wrapper {
+                margin: 0 auto;
+                position: relative;
+                width: 100%;
+                height: 100%;
+                /*
+                padding: 0 20px;
+                max-width: 1160px;
+                min-height: 600px;
+                */
+            }
+
+            .content-wrapper {
+                float: left;
+                width: 100%;
+                height: 100%;
+            }
+            .content {
+                margin-right: 300px !important;
+                clear: both;
+                overflow: auto;
+                height: 100%;
+                /*
+                min-height: 600px;
+                */
+            }
+
+            .sidebar {
+                position: relative;
+                width: 310px;
+                margin-left: -310px;
+                float: right;
+                overflow: hidden;
+                min-height: 100%;
+                border-left: 1px solid #ddd;
+            }
+            .esri-search{
+                width: 275px;
+            }
+			.esri-view .esri-view-surface--inset-outline:focus::after {
+			outline: none !important;
+			}
+        </style>
+        <script>
+        var locationPath = location.pathname.replace(/\/[^\/]+$/, '');
+        window.dojoConfig = {
+            packages: [
+            {
+                name: 'widgets',
+                location: locationPath + '/widgets'
+            }
+            ]
+        };
+        </script>
+        <link rel="stylesheet" href="widgets/CircuitCreation.css">
+        <link rel="stylesheet" href="widgets/PrintWidget.css">
+        <link rel="stylesheet" href="widgets/definitionQuery/definitionQuery.css"/>
+        
+        <!--<script src='../arcgis_js_api/library/4.13/dojo/dojo.js'></script> -->
+        <!--<link rel="stylesheet" href="https://js.arcgis.com/4.14/esri/themes/light/main.css" /> -->
+        <script src="https://js.arcgis.com/4.14/"></script>
+        <script>
+            require([
+                'esri/Map',
+                'esri/views/MapView',
+                "esri/Basemap",
+                "esri/layers/TileLayer",
+                "esri/layers/MapImageLayer",
+                "esri/layers/FeatureLayer",
+                "esri/widgets/LayerList",
+                "esri/widgets/Expand",
+                "esri/widgets/Search",
+                "esri/config",
+                "widgets/definitionQuery/definitionQuery",
+                "widgets/RelationShip/RelationShipModal",
+
+                "widgets/PrintWidget",
+                "widgets/CircuitCreation",
+                'dojo/domReady!'
+            ], function(
+                Map,
+                MapView,
+                Basemap,
+                TileLayer,
+                MapImageLayer,
+                FeatureLayer,
+                LayerList,
+                Expand,
+                Search,
+                esriConfig,
+                definitionQuery,
+                RelationShipModal,
+
+                PrintWidget,
+                CircuitCreation,
+            ) {
+                esriConfig.request.trustedServers.push("http://atlas.mvs.int");
+
+                let baseUrl = location.origin;
+                
+                var EGKO = new TileLayer({ url: baseUrl + "/gate/rest/services/basemaps/egko2019/MapServer" });
+
+                var EGKO_BaseMap = new Basemap({
+                    baseLayers: [EGKO],
+                    title: "ЕГКО",
+                    id: "EGKO",
+                });
+
+                var map = new Map({ basemap: EGKO_BaseMap });
+                // var baseUrl = "http://atlas.mvs.int";
+                //let baseUrl = "http://" + location.hostname;
+
+                var operationlayers = 
+                    [
+                        {id:'setimvs', url: baseUrl + '/gate/rest/services/seti/setimvs/MapServer/', visible: true, title:'ГУП Мосводосток эксплуатируемые'},
+                        {id:'setinodata', url: baseUrl + '/gate/rest/services/seti/setinodata/MapServer/', visible: false, title:'Сети без данных'},
+                        {id:'setibuild', url: baseUrl + '/gate/rest/services/seti/setibuild/MapServer/', visible: true, title:'Строящиеся сети'},
+                        {id:'setiothers', url: baseUrl + '/gate/rest/services/seti/setiothers/MapServer/', visible: true, title:'Сети сторонних организаций'},
+                        {id:'setiold', url: baseUrl + '/gate/rest/services/seti/setiold/MapServer/', visible: false, title:'Ликвидированные сети'},
+                        {id:'setiunfinished', url: baseUrl + '/gate/rest/services/seti/setiunfinished/MapServer/', visible: false, title:'Недооформленные сети'},
+                        {id:'setiproject', url: baseUrl + '/gate/rest/services/seti/setiproject/MapServer/', visible: true, title:'Проектируемые сети'},
+                        {id:'labels2', url: baseUrl + '/gate/rest/services/seti/labels2/MapServer/', visible: true, title: "Подписи", listMode: "hide"},
+                        //{id:'buildClouds', url: baseUrl + '/gate/rest/services/support/buildClouds/MapServer', visible: false, title: "Облака строительство"},
+                        //{id:'projectClouds', url: baseUrl + '/gate/rest/services/support/projectClouds/MapServer', visible: false, title: "Облака проектов"},
+                    ];
+                
+                for (var i = operationlayers.length-1; i >= 0; i--) {
+                    var MapImgLayer = new MapImageLayer(operationlayers[i]);
+                    map.add(MapImgLayer);            
+                }
+
+                var view = new MapView({
+                    container: 'viewDiv',
+                    zoom: 0,
+                    map: map
+                });
+
+                let printWidget = new PrintWidget({
+                    container: "sidebar",
+                    map : map,
+                    view : view,
+                    serviceUrl : baseUrl + "/gate/rest/services/test/actRzgranPrint/GPServer/actPrint/",
+                    layersException : [
+                        //"setimvs"
+                    ]
+                })
+                //view.ui.add(printWidget, "bottom-right")
+
+                var layerList = new LayerList({
+                    view: view
+                });
+                //view.ui.add(layerList, "bottom-left");
+                var search = new Search({
+                view: view,
+				includeDefaultSources: false,
+				sources: [
+				    {
+					layer: new FeatureLayer(baseUrl + "/sargas1022/rest/services/support/search2019/MapServer/0"),
+                    displayField: "ROAD_NAME",
+                    outFields: ["ROAD_NAME", "EGTR", "Okrug", "Rayon",],
+					exactMatch: false,
+					name: "Улицы",
+                    placeholder: "пример: ул. Ленина",
+                    suggestionTemplate: "<b>Улица: {ROAD_NAME}</b> <br>{EGTR} <br>{Okrug} <br>{Rayon}"
+                    },
+                    {
+                    layer: new FeatureLayer(baseUrl + "/sargas1022/rest/services/seti/setident/FeatureServer/0"),
+                    displayField: "PID",
+                    outFields: ["PID"],
+					exactMatch: false,
+					name: "Колодцы",
+					placeholder: "пример: 20023941",
+                    },
+                    {
+                    layer: new FeatureLayer(baseUrl + "/sargas1022/rest/services/seti/setident/MapServer/1"),
+                    displayField: "PID",
+                    outFields: ["PID"],
+					exactMatch: false,
+                    suggestionsEnabled: true,
+					name: "Трубы",
+					placeholder: "пример: 10023837",
+                    },
+                    {
+                    layer: new FeatureLayer(baseUrl + "/sargas1022/rest/services/seti/setident/MapServer/2"),
+                    displayField: "PID",
+                    outFields: ["PID"],
+					exactMatch: false,
+					name: "Водовыпуски",
+					placeholder: "пример: 30007535",
+                    },
+                    {
+                    layer: new FeatureLayer(baseUrl + "/sargas1022/rest/services/support/buildCloudsRL/MapServer/7"),
+                    displayField: "MGGT_NUM",
+                    outFields: ["MGGT_NUM"],
+					exactMatch: false,
+					name: "Строительство",
+                    placeholder: "пример: опс511а-14",
+                    suggestionTemplate: "<b>Номер МГГТ: {MGGT_NUM}</b>  <br>Номер ОТНиП: {OTNiP_num}"
+                    },
+                    {
+                    layer: new FeatureLayer(baseUrl + "/sargas1022/rest/services/support/projectCloudsRL/MapServer/7"),
+                    displayField: "TZ_NUM",
+                    outFields: ["TZ_NUM"],
+					exactMatch: false,
+					name: "Проекты",
+                    placeholder: "пример: 0000.15.МИП",
+                    },
+                ]
+
+                
+            });
+            view.ui.add(search, "top-right");
+
+                layerListExpand = new Expand({
+                    expandIconClass: "esri-icon-layer-list",
+                    view: view,
+                    content: layerList
+                });
+                view.ui.add(layerListExpand, "bottom-left");
+
+                let defProject = new definitionQuery({
+                    layerSearchFields: ["TZ_NUM"], //Поля по которым осуществляется поиск
+                    layerTitle: "Проекты", // Название слоя
+                    layerUrl: baseUrl + "/gate/rest/services/support/projectClouds/MapServer", // url-адрес слоя
+                    outputValues: ["TZ_NUM"], // Поля которые будут выводиться в результат
+                    valueNames: ["Номер ТЗ"], // Названия полей(alias)
+                    widgetName: "Project",
+                    map: map,
+                    view: view
+                });
+                view.ui.add(defProject, "top-right");
+
+                let defBuild = new definitionQuery({
+                    layerSearchFields: ["номер ОТНиП", "MGGT_NUM"],
+                    layerTitle: "Строительство",
+                    layerUrl: baseUrl + "/gate/rest/services/support/buildClouds/MapServer",
+                    outputValues: ["номер ОТНиП", "MGGT_NUM"],
+                    valueNames: ["Номер ОТНиП", "Номер МГГТ"],
+                    widgetName: "Build",
+                    map: map,
+                    view: view
+                });
+                view.ui.add(defBuild, "top-right");
+
+            let relationShip = new RelationShipModal();
+        });
+
+            
+
+        </script>
+    </head>
+    <body>
+
+        <div class="page">
+            <div class="wrapper">
+              <div class="content-wrapper">
+                <div id='viewDiv' class="content">
+                </div>
+              </div>
+              <div id="sidebar" class="sidebar esri-widget">
+              </div>
+            </div>
+          </div>
+
+    </body>
+</html>

@@ -1,0 +1,199 @@
+.esri-queryWidgets {
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    min-width: 250px;
+    position: relative;
+}
+.esri-layer-label {
+    position: relative;
+    margin: 2px;
+    /* padding: 5px 75px; */
+    padding: 5px;
+    text-align: center;
+    /* min-width: inherit; */
+    border-radius: 0px;
+    display: inline-block;
+    color: #0079c1;
+    font-size: 14px;
+    font-family: "Avenir Next W00","Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.3em;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    transition: all .0s;
+    box-sizing: border-box;
+    height: 30px;
+    width: 225px;
+    text-align: left;
+    transition: all .3s;
+}
+.esri-counter-query {
+    display: none;
+    position: initial;
+    padding: 0px 5px;
+    float: right;
+    border: 1px solid;
+    border-radius: 13px;
+}
+.esri-filter-label {
+    pointer-events: none;
+    padding: 15px 15px;
+    margin: 2px;
+    text-align: center;
+    max-width: 32.58px;
+    border-radius: 0px;
+    display: block;
+    color: #0079c1;
+    font-size: 14px;
+    font-family: "Avenir Next W00","Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.3em;
+    background: url(filter.png) no-repeat;
+    background-color: #f5f5f5;
+    background-position: center;   
+    cursor: pointer;
+    transition: all .3s;
+    box-sizing: border-box;
+    float: right;
+}
+.esri-setting-label {
+    pointer-events: none;
+    padding: 5px 10px;
+    margin: 2px;
+    text-align: center;
+    max-width: 32.58px;
+    border-radius: 0px;
+    display: inline-block;
+    color: #0079c1;
+    font-size: 14px;
+    font-family: "Avenir Next W00","Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.3em;
+    background: #f5f5f5;
+    cursor: pointer;
+    transition: all .3s;
+    box-sizing: border-box;
+    height: 30px;
+}
+.esri-setting-label:after {
+    content: '\2630'
+}
+.esri-panel {
+    position: relative;
+    display: table-column-group;
+    background: white;
+    width: 300px;
+    height: auto;
+    margin: auto;
+}
+.esri-search-box {
+    position: initial;
+    background: #f5f5f5;
+    cursor: text;
+    color: #0079c1;
+    font-size: 14px;
+    font-family: "Avenir Next W00","Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.3em;
+    border-radius: 2px;
+    width: 190px;
+    margin: 5px 0px;
+    float: left;
+}
+.esri-load {
+    display: none;
+    position: initial;
+    float: left;
+    background: url(load.gif) no-repeat;
+    padding: 12px;
+    margin: 5px 2px;
+}
+.esri-search-button:active {
+    background: #e1e1e1;
+}
+.esri-clear-search {
+    display: none;
+}
+.esri-clear-search:active {
+    background: #e1e1e1;
+}
+.esri-search-table {
+    position: inherit;
+    max-height: 150px;
+    width: 100%;
+    margin: 5px 0px;
+    background: white;
+    display: block;
+    text-align-last: center;
+    float: left;
+    border: 1px solid #f5f5f5;
+    display: none;
+}
+.esri-clear-query {
+    display: none;
+}
+.esri-clear-query:active {
+    background: #e1e1e1;
+}
+.esri-query-table {
+    position: inherit;
+    max-height: 150px;
+    width: 100%;
+    margin: 5px 0px;
+    background: white;
+    display: block;
+    text-align-last: center;
+    float: left;
+    border: 1px solid #f5f5f5;
+    display: none;
+}
+.esri-search-button, .esri-clear-search, .esri-clear-query {
+    position: inherit;
+    background: #f5f5f5;
+    padding: 5px 5px;
+    cursor: pointer;
+    color: #0079c1;
+    font-size: 14px;
+    font-family: "Avenir Next W00","Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.3em;
+    border-radius: 2px;
+    width: 70px;
+    margin: 3px 0px;
+    float: right;
+    text-align: center;
+}
+.field-circuit[role=gridcell] {
+    background: url(plus.png) no-repeat;
+    background-position: center;
+}
+.field-circuit {
+    color: #0079c1;
+    font-size: 14px;
+    font-family: "Avenir Next W00","Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.3em;
+    cursor: pointer;
+}
+.field-circuit:hover {
+    background-color: #e1e1e1;
+}
+.field-zoom[role=gridcell] {
+    background: url(zoomtoitem.png) no-repeat;
+    background-position: center;
+}
+.field-zoom {
+    color: #0079c1;
+    font-size: 14px;
+    font-family: "Avenir Next W00","Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.3em;
+    cursor: pointer;
+}
+.field-zoom:hover {
+    background-color: #e1e1e1;
+}
+.field-title {
+    width: 130px;
+    color: #0079c1;
+    font-size: 14px;
+    font-family: "Avenir Next W00","Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.3em;
+    cursor: pointer;
+}
+.field-title:hover {
+    background-color: #e1e1e1;
+}

@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "jsxFactory": "tsx",
+    "target": "es5",
+    "experimentalDecorators": true,
+    "preserveConstEnums": true,    
+    "suppressImplicitAnyIndexErrors": true,
+    "esModuleInterop": true 
+  },
+  "include": [
+    "widgets/*",
+    "widgets/RelationShip/*",
+    "widgets/definitionQuery/*",
+    "./node_modules/dojo-typings/dojo/1.11/modules.d.ts",
+    "./node_modules/dojo-typings/dijit/1.11/modules.d.ts",
+    "./node_modules/dojo-typings/dojox/1.11/modules.d.ts", "widgets/rosreestr/RosreestrSearchSource.js", "widgets/rosreestr/RosreestrLayer1024.js", "widgets/rosreestr/RosreestrCadastreSelectedLayer.js", "widgets/rosreestr/RosreestrLayer1024.ts", "widgets/rosreestr/RosreestrCadastreSelectedLayer.ts", "widgets/rosreestr/RosreestrSearchSource.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
